@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery.min.js"></script>
+<script>
+	// data 를 출력할 객체
+	let student = {
+		num : 22,
+		name : '옐미',
+		age : 29,
+		toString : function() {
+			let txt = `번호 : ${this.num}, 이름 : ${this.name}, 나이 : ${this.age}`
+			return txt;
+		}
+	}
+	
+	let student2 = { num : 22, name : '옐미', age : 29 }
+	
+	$( function() {
+		console.dir(student);
+		$('button').on('click', function() {
+			//$('#output').html( student.toString() )
+			//let txt = student.toString();
+			let obj = JSON.stringify(student)
+			let obj2 = { "num":12,"name":"예림","age":29 };
+			let obj3 = '{"num":22,"name":"옐미","age":29}';	// string
+			let obj4 = JSON.parse(obj3);
+			let a;	// 변수 초기값이 없으면 undefined
+			
+			$('#output').append( obj + '<br>' );
+			$('#output').append( obj.num + '<br>' );
+			$('#output').append( obj2.num + '<br>' );
+			$('#output').append( typeof(obj) + '<br>' );	// string : '{"num":22,"name":"옐미","age":29}'
+			$('#output').append( typeof(obj2) + '<br>' );	// object : {"num":22,"name":"옐미","age":29}
+			$('#output').append( obj4.name + '<br>' );	// object : {"num":22,"name":"옐미","age":29}
+			
+			// -------------------------------------------------------------------------------------------------
+			let s = JSON.stringify(student);
+			$('#output').append( s + '<br>' );
+			// 1. 함수가 사라졌다
+			// 2. 모든 속성에 "num" 이 붙는다
+			// {"num":22,"name":"옐미","age":29}
+		})
+	} )
+</script>
+</head>
+<body>
+	<button>출력</button>
+	<div id="output"></div>
+</body>
+</html>

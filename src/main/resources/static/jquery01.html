@@ -26,8 +26,10 @@
 <!-- jquery cdn  -->
 <script src="https://code.jquery.com/jquery.min.js"></script>
 <script>
+	// $(function() {}) == window.onload = function() {}
 	// jquery : js library 추가필요
 	// $('h1') : h1 tag 를 찾아라 document.getElementsByTagName('h1')
+	// $('h1 > p') : document.querySelector(), document.querySelectorAll()
 	$(document).ready( function() {	// window.onload 역할 한번가능
 		$('h1').css('color', 'blue');
 		$('p').css('color', 'red');
@@ -36,6 +38,9 @@
 		$('#div1').html('<p>div1 입니다</p>')	// innerHTML : <b>글자</b> 굵게표시
 		$('#div2').text('<p>div2 입니다</p>')	// innerText : <b>글자</b> &lt;&gt;
 		$('div > p').css('text-decoration', 'underline' );
+		//$('input').val()	// <input type="" value="">
+		//$('input').attr("type")
+		//$('input').prop("type")
 		
 		// 이벤트 연결
 		// js => arrow funciton 화살표 함수 -> 람다식 표현
@@ -45,7 +50,8 @@
 			console.log( e.target )
 			// 선택한(클릭한) div tag 만 글자색을 녹색으로 변경
 			$('div').css('background-color', 'green'); 
-			// alert('div1');
+			alert('div1');
+			$(this).off('click');
 		})
 	});
 </script>
