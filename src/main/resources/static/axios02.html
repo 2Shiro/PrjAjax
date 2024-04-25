@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	ul {
+		width: 300px;
+		height: 480px;
+	}
+	img {
+		margin-top: 5px;
+	}
+	#img {
+		width: 200px;
+	}
+	ul {
+		list-style: none;
+		border: 1px solid #333;
+		border-radius: 10px;
+		width: 300px;
+		margin: 20px;
+		padding: 20px;
+		float: left;
+	}
+	img {
+		width: 200px;
+	}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+	<button>Album List</button>
+	<div id="output1"></div>
+	<hr>
+	<button id="btnPrev">&lt;</button>
+	<input id="num" type="number" value="1" min="1" max="5000" size="2">
+	<button id="btnNext">&gt;</button>
+	<div id="output2"></div>
+	<script>
+	/*
+	java17부터 가능한 java 문법
+	tag = """
+		select * from tab1 where name = "%s" and part = "%02d"
+	""".formated("하하", 1)
+	
+	위의 방식의 예전 방식
+	tag = "select * from tab1 where name = \"하하\" and part = \"01\""
+	*/
+      
+	//html tag 만드는 함수
+	function jsontohtml( data ) {         
+		let tag = `<ul>
+					<li>albumId : ${data.albumId}</li>
+					<li>id : ${data.id}</li>
+					<li>title : ${data.title}</li>
+					<li>url : <img src="${data.url}"></li>
+					<li>thumbnailUrl : <img src="${data.thumbnailUrl}"></li>
+					</ul>`
+		return tag
+	}
+
+	const btnEls = document.querySelectorAll( 'button' )
+	//Album List
+	/*
+	{
+		"albumId": 1,
+		"id": 1,
+		"title": "accusamus beatae ad facilis cum similique qui sunt",
+		"url": "https://via.placeholder.com/600/92c952",
+		"thumbnailUrl": "https://via.placeholder.com/150/92c952"
+	}
+	*/
+	btnEls[0].addEventListener( 'click', () => {
+		//alert('1')
+		let url = 'https://jsonplaceholder.typicode.com/photos'
+		axios.get( url )
+			.then( ( response ) => {
+				console.dir( response )
+				
+				let dataList = response.data
+				console.log( dataList )
+				
+				let html = ''
+				
+				dataList.forEach( ( data ) => {
+					html += jsontohtml( data )
+				} )
+				
+				const outputEl = document.querySelector( '#output1' )
+				outputEl.innerHTML = html
+				
+				//let html = '총 페이지 수 : ' + total + '<br>' + '현재 페이지 : ' + page + '<hr>'
+			} )
+			.catch( ( error ) => {
+				console.log( error )
+			} )
+	} )
+      
+	//Album
+	const btnPrevEl = document.querySelector( '#btnPrev' )
+	const btnNextEl = document.querySelector( '#btnNext' )
+	const numEl = document.querySelector( '#num' )
+	const output2El = document.querySelector( '#output2' )
+	
+	numEl.addEventListener( 'change', () => {
+		console.log( numEl.value )
+		let url = 'https://jsonplaceholder.typicode.com/photos/' + numEl.value
+		axios.get( url )
+			.then( ( resp ) => {
+				let data = resp.data
+				let html = '<fieldset>'
+				html += '<legend>Album</legend>'
+				html += jsontohtml( data )
+				html += '</fieldset>' 
+				output2El.innerHTML = html
+			} )
+	} )
+	
+	btnPrevEl.addEventListener( 'click', () => {
+		let num = parseInt(numEl.value)
+		num -= 1
+		if(num < 1) num = 1
+		numEl.value = num
+		numEl.dispatchEvent(new Event('change'))
+	} )
+	
+	btnNextEl.addEventListener( 'click', () => {
+		let num = parseInt(numEl.value)
+		num += 1
+		if(num > 5000) num = 5000
+		numEl.value = num
+		numEl.dispatchEvent(new Event('change'))
+	} )
+	
+	btnEls[1].addEventListener( 'click', () => {
+		let url = 'https://jsonplaceholder.typicode.com/photos'
+	} )
+   </script>
+</body>
+</html>
